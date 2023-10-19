@@ -10,26 +10,47 @@ public class DrawCylin : MonoBehaviour
 
     public float rayon = 2.0f;
     public float h = 5.0f;
-    public int meridian = 3;
-    
+    public int meridian = 30;
+
+    private float lastRayon;
+    private float lastH;
+    private float lastMeridian;
 
     // Start is called before the first frame update
     void Start()
     {
+        lastRayon = rayon;
+        lastH = h;
+        lastMeridian = lastRayon;
+
         DrawCylindre(meridian, rayon, h);
     }
 
     // Update is called once per frame
     void Update()
     {
+        DrawCylindre(meridian, rayon, h);
+        /*        if (lastRayon != rayon || lastH != h
+                    || lastMeridian != meridian)
+                {
+                    lastRayon = rayon;
+                    lastH = h;
+                    lastMeridian = lastRayon;
+                    DrawCylindre(meridian, rayon, h);
+
+                }*/
 
     }
 
+    private void OnValidate()
+    {
+        DrawCylindre(meridian, rayon, h);
+    }
 
     private void DrawCylindre(int m, float r, float h)
     {
-        Vector3[] vertices = new Vector3[2 + m*2] ;
-        int[] triangles = new int[m*2*3*2];
+        Vector3[] vertices = new Vector3[m * 2 + 2] ;
+        int[] triangles = new int[m*2*3*2*2];
 
 
         if (gameObject.GetComponent<MeshFilter>() == null)
@@ -101,20 +122,28 @@ public class DrawCylin : MonoBehaviour
         vertices[vertexIndex++] = origin_bot;
 
         // Draw Top
-        for (int i = 0; i <= m; i+=2)
+        for (int i = 0; i < m * 2; i += 2)
         {
             triangles[triangleIndex++] = vertices.Length - 2;
             triangles[triangleIndex++] = i + 2;
+            triangles[triangleIndex++] = i;
+        }
+
+        triangles[triangleIndex++] = vertices.Length - 2;
+        triangles[triangleIndex++] = 0;
+        triangles[triangleIndex++] = m * 2 - 2;
+
+        // Draw Bottom
+        for (int i = 1; i < m * 2; i += 2)
+        {
+            triangles[triangleIndex++] = vertices.Length - 1;
+            triangles[triangleIndex++] = i;
             triangles[triangleIndex++] = i + 2;
         }
 
-        // Draw Bot
-        for (int i = 1; i <= m; i += 2)
-        {
-            triangles[triangleIndex++] = vertices.Length - 1;
-            triangles[triangleIndex++] = i + 2;
-            triangles[triangleIndex++] = i;
-        }
+        triangles[triangleIndex++] = vertices.Length - 1;
+        triangles[triangleIndex++] = m * 2 - 1;
+        triangles[triangleIndex++] = 1;
 
         Mesh msh = new Mesh();                          // Création et remplissage du Mesh
 

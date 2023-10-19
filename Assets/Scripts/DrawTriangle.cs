@@ -24,7 +24,14 @@ public class Hello_Triangle : MonoBehaviour
 
         drawTriangle(nb_ligne, nb_colonne);
     }
-    
+
+
+    private void OnValidate()
+    {
+        drawTriangle(nb_ligne, nb_colonne);
+    }
+
+
 
     private void drawTriangle(int n, int m)
     {
