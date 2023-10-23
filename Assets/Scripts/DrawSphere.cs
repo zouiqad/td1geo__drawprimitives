@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 
 public class DrawSphere : MonoBehaviour
@@ -58,29 +59,41 @@ public class DrawSphere : MonoBehaviour
 
 
         
-        for (int i = 1; i <= p; i++)
+        for (int i = 1; i < p; i++)
         {
             teta = 0;
             float rayon = r * Mathf.Sin(phi);
             for (int j = 0; j < m; j++)
             {
                 Vector3 point = new Vector3(rayon * Mathf.Cos(teta), r * Mathf.Cos(phi), rayon * Mathf.Sin(teta));
+                Handles.Label(point, indexVertex.ToString());
                 vertices[indexVertex++] = point;
-                Gizmos.DrawSphere(point, 0.3f);
+                //Gizmos.DrawSphere(point, 0.3f);
                 teta += teta_slice;
             }
-            phi = phi_slice * i;
+            phi += phi_slice;
         }
 
+        // Add poles 
+        vertices[indexVertex++] = new Vector3(0.0f, r * Mathf.Cos(0), 0.0f);
+        Handles.Label(vertices[indexVertex - 1], indexVertex.ToString());
+        vertices[indexVertex++] = new Vector3(0.0f, r * Mathf.Cos(Mathf.PI), 0.0f);
+        Handles.Label(vertices[indexVertex - 1], indexVertex.ToString());
 
+
+
+        
         // Draw triangles
         int indexTriangle = 0;
-        for (int i = 0; i < 40; ++i)
+
+        // Draw Body
+        for (int i = 0; i < (m * p) - (2 * m); i++)
         {
             int vertexA = i;
-            int vertexB = vertexA + 1;
-            int vertexC = vertexB + m;
-            int vertexD = vertexC + + m + 1;
+            int vertexB = ((vertexA + 1) % m == 0 && vertexA != 0) ? vertexA - m + 1 : vertexA + 1;
+            int vertexC = vertexA + m;
+            int vertexD = vertexB + m;
+
 
             triangles[indexTriangle++] = vertexA;
             triangles[indexTriangle++] = vertexD;
@@ -91,6 +104,29 @@ public class DrawSphere : MonoBehaviour
             triangles[indexTriangle++] = vertexD;
         }
 
+        // Pole nord
+        for (int i = 0; i < m; i++)
+        {
+            int vertexA = i;
+            int vertexB = indexVertex - 2;
+            int vertexC = ((vertexA + 1) % m == 0 && vertexA != 0) ? vertexA - m + 1 : vertexA + 1;
+
+            triangles[indexTriangle++] = vertexA;
+            triangles[indexTriangle++] = vertexB;
+            triangles[indexTriangle++] = vertexC;
+        }
+
+        // Pole sud
+        for (int i = m * p - 2 * m; i < m * p - m; i++)
+        {
+            int vertexA = i;
+            int vertexB = indexVertex - 1;
+            int vertexC = ((vertexA + 1) % m == 0 && vertexA != 0) ? vertexA - m + 1 : vertexA + 1;
+
+            triangles[indexTriangle++] = vertexA;
+            triangles[indexTriangle++] = vertexC;
+            triangles[indexTriangle++] = vertexB;
+        }
 
         Mesh msh = new Mesh();                          // Création et remplissage du Mesh
 
