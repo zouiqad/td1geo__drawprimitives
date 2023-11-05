@@ -66,9 +66,7 @@ public class DrawSphere : MonoBehaviour
             for (int j = 0; j < m; j++)
             {
                 Vector3 point = new Vector3(rayon * Mathf.Cos(teta), r * Mathf.Cos(phi), rayon * Mathf.Sin(teta));
-                Handles.Label(point, indexVertex.ToString());
                 vertices[indexVertex++] = point;
-                //Gizmos.DrawSphere(point, 0.3f);
                 teta += teta_slice;
             }
             phi += phi_slice;
@@ -76,9 +74,7 @@ public class DrawSphere : MonoBehaviour
 
         // Add poles 
         vertices[indexVertex++] = new Vector3(0.0f, r * Mathf.Cos(0), 0.0f);
-        Handles.Label(vertices[indexVertex - 1], indexVertex.ToString());
         vertices[indexVertex++] = new Vector3(0.0f, r * Mathf.Cos(Mathf.PI), 0.0f);
-        Handles.Label(vertices[indexVertex - 1], indexVertex.ToString());
 
 
 

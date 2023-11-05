@@ -12,18 +12,12 @@ public class DrawCylin : MonoBehaviour
     public float h = 5.0f;
     public int meridian = 30;
 
-    private float lastRayon;
-    private float lastH;
-    private float lastMeridian;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        lastRayon = rayon;
-        lastH = h;
-        lastMeridian = lastRayon;
 
-        DrawCylindre(meridian, rayon, h);
     }
 
     // Update is called once per frame
@@ -74,9 +68,6 @@ public class DrawCylin : MonoBehaviour
             vertices[vertexIndex++] = pp;
 
             teta += phi;
-            Debug.Log(teta);
-            Debug.Log(p);
-            Debug.Log(pp);
 
         }
 

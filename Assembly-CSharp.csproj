@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\DrawSphere.cs" />
+    <Compile Include="Assets\Scripts\MeshLoader.cs" />
     <Compile Include="Assets\Scripts\DrawCylindre.cs" />
     <Compile Include="Assets\Scripts\DrawTriangle.cs" />
   </ItemGroup>

@@ -385,6 +385,7 @@
 "Assets/Scripts/DrawCylindre.cs"
 "Assets/Scripts/DrawSphere.cs"
 "Assets/Scripts/DrawTriangle.cs"
+"Assets/Scripts/MeshLoader.cs"
 -langversion:9.0
 
 /deterministic
